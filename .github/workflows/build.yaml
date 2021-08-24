@@ -53,10 +53,10 @@ jobs:
         dir
 
         $rootDir = $pwd.Path
-        $command = $(Get-Command func).Source.Replace(".ps1", ".cmd")
+        $func = $(Get-Command func).Source.Replace(".ps1", ".cmd")
 
         cd ./src/FunctionApp
-        Start-Process -NoNewWindow "$command" start
+        Start-Process -NoNewWindow "$func" start --verbose false
         Start-Sleep -s 60
 
         cd $rootDir/test/FunctionApp.Tests
@@ -72,7 +72,7 @@ jobs:
         $rootDir = $pwd.Path
 
         cd ./src/FunctionApp
-        Start-Process -NoNewWindow func start
+        Start-Process -NoNewWindow func start --verbose false
         Start-Sleep -s 60
 
         cd $rootDir/test/FunctionApp.Tests
