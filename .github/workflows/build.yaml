@@ -1,0 +1,56 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build_and_test:
+    name: Build and test
+    strategy:
+      matrix:
+        os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK 3.1 LTS
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Clear NuGet local cache
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        dotnet nuget locals all --clear
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
+
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet build . -c Debug -v minimal
+
+    - name: Run function app background
+      shell: pwsh
+      run: |
+        dir
+        cd ./src/FunctionApp
+        Start-Process -NoNewWindow func start
+        Start-Sleep -s 60
+
+    - name: Test solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet test . -c Debug
