@@ -56,7 +56,8 @@ jobs:
         $func = $(Get-Command func).Source.Replace(".ps1", ".cmd")
 
         cd ./src/FunctionApp
-        Start-Process -NoNewWindow "$func" start --verbose false
+        # Start-Process -NoNewWindow "$func" start --verbose false
+        Start-Process -NoNewWindow "$func" @("start","--verbose","false")
         Start-Sleep -s 60
 
         cd $rootDir/test/FunctionApp.Tests
@@ -72,7 +73,8 @@ jobs:
         $rootDir = $pwd.Path
 
         cd ./src/FunctionApp
-        Start-Process -NoNewWindow func start --verbose false
+        # Start-Process -NoNewWindow func start --verbose false
+        Start-Process -NoNewWindow func @("start","--verbose","false")
         Start-Sleep -s 60
 
         cd $rootDir/test/FunctionApp.Tests
