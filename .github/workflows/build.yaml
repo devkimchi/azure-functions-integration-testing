@@ -50,17 +50,10 @@ jobs:
       shell: pwsh
       run: |
         dir
-
-        # $rootDir = $pwd.Path
-        # cd ./src/FunctionApp
-        # Start-Process -NoNewWindow func start
-        # Start-Sleep -s 60
-        # cd $rootDir
-
-        ./run.ps1
+        ./run-functionapp.ps1
 
     - name: Test solution
       shell: pwsh
       run: |
         dir
-        dotnet test . -c Debug
+        ./run-tests.ps1
