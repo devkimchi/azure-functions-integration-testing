@@ -18,6 +18,11 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
+    - name: Setup Azure Functions Core Tools
+      shell: pwsh
+      run: |
+        npm install -g azure-functions-core-tools@3 --unsafe-perm true
+
     - name: Setup .NET SDK 3.1 LTS
       uses: actions/setup-dotnet@v1
       with:
@@ -45,9 +50,14 @@ jobs:
       shell: pwsh
       run: |
         dir
-        cd ./src/FunctionApp
-        Start-Process -NoNewWindow func start
-        Start-Sleep -s 60
+
+        # $rootDir = $pwd.Path
+        # cd ./src/FunctionApp
+        # Start-Process -NoNewWindow func start
+        # Start-Sleep -s 60
+        # cd $rootDir
+
+        ./run.ps1
 
     - name: Test solution
       shell: pwsh
