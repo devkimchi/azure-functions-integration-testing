@@ -46,11 +46,23 @@ jobs:
         dir
         dotnet build . -c Debug -v minimal
 
-    - name: Run function app background
+    - name: Run function app background (Windows)
+      if: matrix.os == 'windows-latest'
       shell: pwsh
       run: |
         dir
-        # ./run-functionapp.ps1
+        $command = $(Get-Command func).Source.Replace(".ps1", ".cmd")
+        $rootDir = $pwd.Path
+        cd ./src/FunctionApp
+        Start-Process -NoNewWindow "$command" start
+        Start-Sleep -s 60
+        cd $rootDir
+
+    - name: Run function app background (Non-Windows)
+      if: matrix.os != 'windows-latest'
+      shell: pwsh
+      run: |
+        dir
         $rootDir = $pwd.Path
         cd ./src/FunctionApp
         Start-Process -NoNewWindow func start
@@ -61,7 +73,6 @@ jobs:
       shell: pwsh
       run: |
         dir
-        # ./run-tests.ps1
         $rootDir = $pwd.Path
         cd ./test/FunctionApp.Tests
         dotnet test . -c Debug
