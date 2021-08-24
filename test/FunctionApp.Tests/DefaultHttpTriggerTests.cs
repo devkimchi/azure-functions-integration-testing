@@ -31,7 +31,7 @@ namespace FunctionApp.Tests
         public async Task Given_OpenApiUrl_When_Endpoint_Invoked_Then_It_Should_Return_Title()
         {
             var response = await this._http.GetStringAsync("http://localhost:7071/api/openapi/v3.json").ConfigureAwait(false);
-            var doc = (dynamic)JsonConvert.DeserializeObject<OpenApiDocument>(response);
+            var doc = JsonConvert.DeserializeObject<OpenApiDocument>(response);
 
             doc.Should().NotBeNull();
             doc.Info.Title.Should().Be("OpenAPI Document on Azure Functions");
